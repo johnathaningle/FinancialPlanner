@@ -28,6 +28,9 @@ class PlannerService {
   //misc spending threshold information
   double spendingFlex, flexThreshold;
 
+  //misc things to factor in for paycheck
+  double percentYearlyRaise;
+
   //tax/fees
   double taxRate, investmentFees;
 
@@ -45,6 +48,20 @@ class PlannerService {
 
   //adjust calculation for inflation
   bool accountForInflation;
+
+  /**
+   * Calculate the income based on the yearly raise
+   */
+  List<int> getIncome(int numYears) {
+    var currentValue = this.salary;
+    var values = new List<int>();
+    for (int i = 0; i < numYears; i++) {
+      values.add(currentValue);
+      currentValue =
+          (currentValue + (currentValue * (this.percentYearlyRaise))).toInt();
+    }
+    return values;
+  }
 
   //init the values with sample data
   //https://engaging-data.com/will-money-last-retire-early/
@@ -69,9 +86,17 @@ class PlannerService {
     this.extraExpenseStartAge = 50;
     this.extraExpenseEndAge = 70;
     this.accountForInflation = true;
+    this.salary = 100583;
+    this.percentYearlyRaise = 0.02;
   }
 
-  String Summary() {
-    return "Based on your planning data...";
+  List<String> Summary() {
+    var summary = new List<String>();
+    summary.add("Based on your planning data...");
+    var incomeData = getIncome(28);
+    incomeData.forEach((element) {
+      summary.add(element.toString());
+    });
+    return summary;
   }
 }
