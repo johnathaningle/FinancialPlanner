@@ -10,6 +10,11 @@ enum Mortality {
   Good,
 }
 
+class Person {
+  int salary;
+  double retirementContribution;
+}
+
 class PlannerService {
   //earnings and savings
   int salary, savings, yearlySpending;
