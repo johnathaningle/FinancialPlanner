@@ -33,6 +33,18 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Text(
+          "?",
+          style: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        onPressed: () {
+          print("help");
+        },
+      ),
     );
   }
 }
