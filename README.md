@@ -40,3 +40,8 @@ Roadmap
   * to html?
   * to json?
   * to email?
+* consider those who are not yet ready to calculate retirement, but are simply wondering what their financial outlook is
+  * debt paydown calculator/clock
+  * plan for getting out of debt that includes waterfall/avalanche comparisons
+  * projections for paydown schedules based on addition principal payments
+  * liberal use of the personal finance flowchart concepts
