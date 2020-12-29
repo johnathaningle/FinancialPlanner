@@ -19,3 +19,6 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.9.0 <3.0.0"
+
+dependencies:
+  intl: ^0.15.8

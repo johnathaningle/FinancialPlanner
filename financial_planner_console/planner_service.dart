@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 enum GenderType {
   Male,
   Female,
@@ -19,8 +21,9 @@ enum Frequency {
 }
 
 // how negotiable is this expense?
+// this will be used when making recommendations for budget optimisations
 enum Necessity {
-  Critical, // this cannot be removed and is difficult to reduce
+  Critical, // this expense cannot be removed and is difficult to reduce
   Adjustable, // this needs to stick around but there's some wiggle room on cost
   Expendable, // worst case scenario, I can drop this expense
 }
@@ -170,13 +173,23 @@ class PlannerService {
     this.percentYearlyRaise = 0.02;
   }
 
+  // number format for money
+  final money = new NumberFormat("#,##0.00", "en_US");
+
   List<String> Summary() {
     var summary = new List<String>();
     summary.add("Based on your planning data...");
-    var incomeData = getIncome(28);
+
+    // do income projection
+    var incomeData = getIncome(10);
+    int c = 1;
     incomeData.forEach((element) {
-      summary.add(element.toString());
+      summary.add("Year " + c.toString() + ": \$" + money.format(element));
+      c++;
     });
+
+    // do debt projection
+
     return summary;
   }
 }
