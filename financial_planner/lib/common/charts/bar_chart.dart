@@ -1,10 +1,18 @@
+import 'package:financial_planner/common/charts/double_bar_chart_value.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class DoubleBarChart extends StatefulWidget {
-  const DoubleBarChart({Key key, this.title, this.subTitle}) : super(key: key);
+  const DoubleBarChart({
+    Key key,
+    this.title,
+    this.subTitle,
+    this.barData,
+  }) : super(key: key);
+
   final String title;
   final String subTitle;
+  final List<BarChartGroupData> barData;
   @override
   State<StatefulWidget> createState() => DoubleBarChartState();
 }
@@ -14,23 +22,23 @@ class DoubleBarChartState extends State<DoubleBarChart> {
   Color rightBarColor = Colors.lightBlue;
   double width = 7;
 
-  List<BarChartGroupData> rawBarGroups;
-  List<BarChartGroupData> showingBarGroups;
+  List<BarChartGroupData> barGroups;
 
   int touchedGroupIndex;
 
   @override
   void initState() {
-    super.initState();
-    final barGroup1 = makeGroupData(0, 5, 12);
-    final barGroup2 = makeGroupData(1, 16, 12);
-    final barGroup3 = makeGroupData(2, 18, 5);
-    final barGroup4 = makeGroupData(3, 20, 16);
-    final barGroup5 = makeGroupData(4, 17, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
-    final barGroup7 = makeGroupData(6, 10, 1.5);
+    //todo - make the below code work (for some reason the y axis doesn't scale properly)
+    // barGroups = widget.barData;
+    final barGroup1 = DoubleBarChartValue.makeGroupData(width, 0, 5, 12);
+    final barGroup2 = DoubleBarChartValue.makeGroupData(width, 1, 16, 12);
+    final barGroup3 = DoubleBarChartValue.makeGroupData(width, 2, 18, 5);
+    final barGroup4 = DoubleBarChartValue.makeGroupData(width, 3, 20, 16);
+    final barGroup5 = DoubleBarChartValue.makeGroupData(width, 4, 17, 6);
+    final barGroup6 = DoubleBarChartValue.makeGroupData(width, 5, 19, 1.5);
+    final barGroup7 = DoubleBarChartValue.makeGroupData(width, 6, 10, 1.5);
 
-    final items = [
+    barGroups = [
       barGroup1,
       barGroup2,
       barGroup3,
@@ -39,10 +47,7 @@ class DoubleBarChartState extends State<DoubleBarChart> {
       barGroup6,
       barGroup7,
     ];
-
-    rawBarGroups = items;
-
-    showingBarGroups = rawBarGroups;
+    super.initState();
   }
 
   @override
@@ -65,7 +70,10 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  makeTransactionsIcon(),
+                  Icon(
+                    Icons.bar_chart,
+                    color: Colors.white,
+                  ),
                   const SizedBox(
                     width: 40,
                   ),
@@ -90,7 +98,7 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: BarChart(
                     BarChartData(
-                      maxY: 20,
+                      maxY: 25,
                       barTouchData: BarTouchData(
                           touchTooltipData: BarTouchTooltipData(
                             tooltipBgColor: Colors.grey,
@@ -100,7 +108,7 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                             if (response.spot == null) {
                               setState(() {
                                 touchedGroupIndex = -1;
-                                showingBarGroups = List.of(rawBarGroups);
+                                barGroups = List.of(widget.barData);
                               });
                               return;
                             }
@@ -112,25 +120,23 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                               if (response.touchInput is FlLongPressEnd ||
                                   response.touchInput is FlPanEnd) {
                                 touchedGroupIndex = -1;
-                                showingBarGroups = List.of(rawBarGroups);
+                                barGroups = List.of(widget.barData);
                               } else {
-                                showingBarGroups = List.of(rawBarGroups);
+                                barGroups = List.of(widget.barData);
                                 if (touchedGroupIndex != -1) {
                                   double sum = 0;
                                   for (BarChartRodData rod
-                                      in showingBarGroups[touchedGroupIndex]
-                                          .barRods) {
+                                      in barGroups[touchedGroupIndex].barRods) {
                                     sum += rod.y;
                                   }
                                   final avg = sum /
-                                      showingBarGroups[touchedGroupIndex]
+                                      barGroups[touchedGroupIndex]
                                           .barRods
                                           .length;
 
-                                  showingBarGroups[touchedGroupIndex] =
-                                      showingBarGroups[touchedGroupIndex]
-                                          .copyWith(
-                                    barRods: showingBarGroups[touchedGroupIndex]
+                                  barGroups[touchedGroupIndex] =
+                                      barGroups[touchedGroupIndex].copyWith(
+                                    barRods: barGroups[touchedGroupIndex]
                                         .barRods
                                         .map((rod) {
                                       return rod.copyWith(y: avg);
@@ -150,24 +156,7 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                               fontSize: 14),
                           margin: 20,
                           getTitles: (double value) {
-                            switch (value.toInt()) {
-                              case 0:
-                                return 'Mn';
-                              case 1:
-                                return 'Te';
-                              case 2:
-                                return 'Wd';
-                              case 3:
-                                return 'Tu';
-                              case 4:
-                                return 'Fr';
-                              case 5:
-                                return 'St';
-                              case 6:
-                                return 'Sn';
-                              default:
-                                return '';
-                            }
+                            return value.toInt().toString();
                           },
                         ),
                         leftTitles: SideTitles(
@@ -194,7 +183,7 @@ class DoubleBarChartState extends State<DoubleBarChart> {
                       borderData: FlBorderData(
                         show: false,
                       ),
-                      barGroups: showingBarGroups,
+                      barGroups: barGroups,
                     ),
                   ),
                 ),
@@ -206,69 +195,6 @@ class DoubleBarChartState extends State<DoubleBarChart> {
           ),
         ),
       ),
-    );
-  }
-
-  BarChartGroupData makeGroupData(int x, double y1, double y2) {
-    return BarChartGroupData(barsSpace: 4, x: x, barRods: [
-      BarChartRodData(
-        y: y1,
-        colors: [Colors.lightBlue],
-        width: width,
-      ),
-      BarChartRodData(
-        y: y2,
-        colors: [Colors.orangeAccent],
-        width: width,
-      ),
-    ]);
-  }
-
-  Widget makeTransactionsIcon() {
-    const double width = 4.5;
-    const double space = 3.5;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          width: width,
-          height: 10,
-          color: Colors.white.withOpacity(0.4),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 28,
-          color: Colors.white.withOpacity(0.8),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 42,
-          color: Colors.white.withOpacity(1),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 28,
-          color: Colors.white.withOpacity(0.8),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 10,
-          color: Colors.white.withOpacity(0.4),
-        ),
-      ],
     );
   }
 }

@@ -1,14 +1,4 @@
-enum GenderType {
-  Male,
-  Female,
-  Unknown,
-}
-
-enum Mortality {
-  Poor,
-  Average,
-  Good,
-}
+import 'package:financial_planner/common/data/enums.dart';
 
 class Person {
   int salary;
