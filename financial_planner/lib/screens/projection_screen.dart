@@ -1,8 +1,11 @@
 import 'package:data_tables/data_tables.dart';
+import 'package:financial_planner/common/buttons/floating_action_button.dart';
 import 'package:financial_planner/common/projection.dart';
 import 'package:flutter/material.dart';
 
 class ProjectionScreen extends StatefulWidget {
+  const ProjectionScreen({Key key}) : super(key: key);
+
   @override
   _ProjectionScreenState createState() => _ProjectionScreenState();
 }
@@ -33,18 +36,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Text(
-          "?",
-          style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        onPressed: () {
-          print("help");
-        },
-      ),
+      floatingActionButton: floatingActionButton,
     );
   }
 }
