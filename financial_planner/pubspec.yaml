@@ -23,6 +23,7 @@ environment:
 dependencies:
   data_tables: ^1.0.3
   flutter_bloc: ^6.0.1
+  fl_chart: ^0.12.2
   flutter:
     sdk: flutter
 

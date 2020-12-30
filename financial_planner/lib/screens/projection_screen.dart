@@ -1,5 +1,6 @@
 import 'package:data_tables/data_tables.dart';
 import 'package:financial_planner/common/buttons/floating_action_button.dart';
+import 'package:financial_planner/common/charts/bar_chart.dart';
 import 'package:financial_planner/common/projection.dart';
 import 'package:flutter/material.dart';
 
@@ -30,10 +31,11 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
         title: const Text('Financial Plan'),
       ),
       body: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Text(
-          "Projections:",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BarChartSample2(title: "Projections", subTitle: "Net Worth"),
+          ],
         ),
       ),
       floatingActionButton: floatingActionButton,
