@@ -34,7 +34,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BarChartSample2(title: "Projections", subTitle: "Net Worth"),
+            DoubleBarChart(title: "Projections", subTitle: "Net Worth"),
           ],
         ),
       ),
