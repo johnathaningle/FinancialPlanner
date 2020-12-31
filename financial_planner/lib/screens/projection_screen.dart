@@ -1,6 +1,6 @@
 import 'package:data_tables/data_tables.dart';
 import 'package:financial_planner/common/buttons/floating_action_button.dart';
-import 'package:financial_planner/common/charts/bar_chart.dart';
+import 'package:financial_planner/common/charts/double_bar_chart.dart';
 import 'package:financial_planner/common/charts/chart_constants.dart';
 import 'package:financial_planner/common/data/person.dart';
 import 'package:financial_planner/common/services/formulas.dart';
