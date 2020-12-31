@@ -2,6 +2,7 @@ import 'package:data_tables/data_tables.dart';
 import 'package:financial_planner/common/buttons/floating_action_button.dart';
 import 'package:financial_planner/common/charts/double_bar_chart.dart';
 import 'package:financial_planner/common/charts/chart_constants.dart';
+import 'package:financial_planner/common/charts/line_chart.dart';
 import 'package:financial_planner/common/data/person.dart';
 import 'package:financial_planner/common/services/formulas.dart';
 import 'package:financial_planner/common/services/planner_service.dart';
@@ -33,7 +34,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
       appBar: AppBar(
         title: const Text('Financial Plan'),
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,6 +44,7 @@ class _ProjectionScreenState extends State<ProjectionScreen> {
               barData:
                   plannerService.getNetWorthForcast(ChartConstants.width, 10),
             ),
+            MappedLineChart(chartData: plannerService.getExpensesOverTime())
           ],
         ),
       ),

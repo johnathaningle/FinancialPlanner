@@ -1,7 +1,11 @@
+import 'package:financial_planner/common/data/asset.dart';
 import 'package:financial_planner/common/data/enums.dart';
+import 'package:financial_planner/common/data/expense.dart';
 
 class Person {
-  int salary;
+  int currentAge;
+
+  double salary;
 
   double retirementContribution;
 
@@ -9,11 +13,11 @@ class Person {
 
   int retirementAge;
 
-  int retirementYears;
+  double retirementYears;
 
-  int yearlySpending;
+  double yearlySpending;
 
-  int savings;
+  double savings;
 
   Mortality mortality;
 
@@ -33,11 +37,11 @@ class Person {
 
   double taxRate;
 
-  int extraExpense;
+  double extraExpense;
 
   int extraIncomeStartAge;
 
-  int extraIncome;
+  double extraIncome;
 
   int extraIncomeEndAge;
 
@@ -53,8 +57,17 @@ class Person {
 
   int initalRetirementBalance;
 
+  int expectedDeathAge;
+
+  //a list of assets for the user
+  List<Asset> assets;
+
+  //a list of expenses for the user
+  List<Expense> expenses;
+
   Person() {
     this.name = "Jon Doe";
+    this.currentAge = 30;
     this.retirementAge = 40;
     this.retirementYears = 50;
     this.yearlySpending = 40000;
@@ -78,5 +91,24 @@ class Person {
     this.salary = 100583;
     this.percentYearlyRaise = 0.02;
     this.initalRetirementBalance = 206893;
+    this.expectedDeathAge = 95;
+    var expenses = new List<Expense>();
+    var e = new Expense();
+    e.name = "Rent";
+    e.amount = 1000;
+    e.annualIncreasePercentage = 0.02;
+    e.necessity = Necessity.Critical;
+    expenses.add(e);
+    var e2 = new Expense();
+    e2.name = "Dining Out";
+    e2.amount = 50.00 * 52;
+    e2.necessity = Necessity.Expendable;
+    expenses.add(e2);
+    this.expenses = expenses;
+    this.assets = new List<Asset>();
+  }
+
+  int expectedLifeRemaining() {
+    return expectedDeathAge - currentAge;
   }
 }
