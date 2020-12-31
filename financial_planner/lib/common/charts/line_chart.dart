@@ -5,21 +5,28 @@ import 'package:financial_planner/common/charts/vector_2d.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class MappedLineChart extends StatelessWidget {
-  MappedLineChart({Key key, this.chartData}) : super(key: key);
+class MappedLineChart extends StatefulWidget {
+  const MappedLineChart({Key key, this.chartData}) : super(key: key);
 
   final List<Vector2D<double>> chartData;
-  double minX, minY, maxX, maxY;
 
   @override
+  State<StatefulWidget> createState() {
+    return MappedLineChartState();
+  }
+}
+
+class MappedLineChartState extends State<MappedLineChart> {
+  double minX, minY, maxX, maxY;
+  List<FlSpot> data;
+  @override
   Widget build(BuildContext context) {
-    var titles = new HashSet<String>();
     calculateMaximums();
-    var spots = List.of(chartData.map<FlSpot>((x) => vectorToSpot(x)));
+    data = List.of(widget.chartData.map<FlSpot>((x) => vectorToSpot(x)));
     return Card(
       color: Colors.black87,
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -30,11 +37,18 @@ class MappedLineChart extends StatelessWidget {
                 minY: minY,
                 maxX: maxX,
                 maxY: maxY,
+                borderData: FlBorderData(
+                  show: false,
+                ),
                 titlesData: FlTitlesData(
+                  show: true,
                   leftTitles: SideTitles(
                       showTitles: true,
-                      getTextStyles: (double x) => TextStyle(
+                      reservedSize: 14,
+                      margin: 20,
+                      getTextStyles: (x) => const TextStyle(
                             color: Colors.white,
+                            fontSize: 14,
                           ),
                       getTitles: (double x) {
                         var title = "";
@@ -50,19 +64,11 @@ class MappedLineChart extends StatelessWidget {
                             title = "";
                           }
                         }
-                        if (titles.contains(title)) {
-                          return "";
-                        } else {
-                          titles.add(title);
-                        }
                         return title;
                       }),
                 ),
-                gridData: FlGridData(
-                  show: true,
-                ),
                 lineBarsData: [
-                  new LineChartBarData(spots: spots),
+                  new LineChartBarData(spots: data),
                 ],
                 backgroundColor: Colors.black87,
               ),
@@ -82,7 +88,7 @@ class MappedLineChart extends StatelessWidget {
     minY = null;
     maxX = null;
     maxY = null;
-    chartData.forEach((val) => {
+    widget.chartData.forEach((val) => {
           if (minX == null || val.x < minX) {minX = val.x},
           if (minY == null || val.y < minY) {minY = val.y},
           if (maxX == null || val.x > maxX) {maxX = val.x},
