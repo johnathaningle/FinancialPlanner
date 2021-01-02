@@ -1,5 +1,7 @@
-import 'package:financial_planner/screens/projection_screen.dart';
+import 'package:financial_planner/screens/nav_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'common/services/formulas.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ProjectionScreen(),
+      home: NavScreen(),
     );
   }
 }
