@@ -184,7 +184,8 @@ class PlannerService {
     var incomeData = getIncome(10);
     int c = 1;
     incomeData.forEach((element) {
-      summary.add("Year " + c.toString() + ": \$" + money.format(element));
+      summary
+          .add("Income Year " + c.toString() + ": \$" + money.format(element));
       c++;
     });
 
