@@ -85,6 +85,13 @@ class Debt {
   double minumumMonthlyPayment;
   double additionalMonthlyPayment; // (nullable)
   double escrow; // (nullable)
+  Debt(
+      {this.name,
+      this.principal,
+      this.annualInterest,
+      this.minumumMonthlyPayment,
+      this.additionalMonthlyPayment,
+      this.escrow = null});
 }
 
 class Liability {
@@ -98,6 +105,9 @@ class Person {
 }
 
 class PlannerService {
+  // debts
+  List<Debt> debts;
+
   //earnings and savings
   int salary, savings, yearlySpending;
 
@@ -146,6 +156,26 @@ class PlannerService {
     return values;
   }
 
+  List<Debt> simulateDebtData() {
+    var simulatedDebts = List<Debt>();
+    var debt1 = Debt(
+        name: "Loan 1",
+        principal: 2917,
+        annualInterest: 15.24,
+        minumumMonthlyPayment: 38,
+        additionalMonthlyPayment: 50);
+    var debt2 = Debt(
+        name: "Loan 2",
+        principal: 10245.37,
+        annualInterest: 1.9,
+        minumumMonthlyPayment: 277.62,
+        additionalMonthlyPayment: 50);
+    simulatedDebts.add(debt1);
+    simulatedDebts.add(debt2);
+
+    return simulatedDebts;
+  }
+
   //init the values with sample data
   //https://engaging-data.com/will-money-last-retire-early/
   PlannerService() {
@@ -179,17 +209,29 @@ class PlannerService {
   List<String> Summary() {
     var summary = new List<String>();
     summary.add("Based on your planning data...");
+    summary.add("Income Summary");
 
     // do income projection
     var incomeData = getIncome(10);
     int c = 1;
     incomeData.forEach((element) {
-      summary
-          .add("Income Year " + c.toString() + ": \$" + money.format(element));
+      summary.add("Year " + c.toString() + ": \$" + money.format(element));
       c++;
     });
 
     // do debt projection
+    summary.add("");
+    summary.add("Debt Summary");
+    // var debtData = getDebtData();
+    var debtData = simulateDebtData();
+
+    debtData.forEach((debt) {
+      summary.add(debt.name + " - \$" + money.format(debt.principal));
+    });
+
+    // run payoff simulator, code that needs to be translated from javascript
+    // that I made in a previous project
+    // https://github.com/Forklift34/HIBRneat/blob/master/standalone.js
 
     return summary;
   }
